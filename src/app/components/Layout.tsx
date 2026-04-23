@@ -1,13 +1,23 @@
-import { Outlet, Link } from 'react-router';
-import { ShoppingCart, Laptop, User, LogOut, Shield } from 'lucide-react';
+import { Outlet, Link, useNavigate } from 'react-router';
+import { ShoppingCart, Laptop, User, LogOut, Shield, Package, Settings } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { motion } from 'motion/react';
 import { Toaster } from './ui/sonner';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu';
 
 export function Layout() {
   const { totalItems } = useCart();
   const { isAuthenticated, isAdmin, logout, user } = useAuth();
+
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-red-50/20 to-gray-50">
@@ -56,21 +66,32 @@ export function Layout() {
               </Link>
 
               {isAuthenticated ? (
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-2 rounded-full bg-white border border-red-900/10 px-4 py-2.5">
-                    <User className="size-5 text-red-700" />
-                    <span className="text-sm font-medium text-gray-700">{user?.email}</span>
-                  </div>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={logout}
-                    className="flex items-center gap-2 rounded-full bg-gray-200 px-4 py-2.5 text-gray-700 hover:bg-gray-300"
-                  >
-                    <LogOut className="size-5" />
-                    <span className="font-medium">Déconnexion</span>
-                  </motion.button>
-                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex items-center gap-2 rounded-full bg-white border border-red-900/10 px-4 py-2.5 outline-none"
+                    >
+                      <User className="size-5 text-red-700" />
+                      <span className="text-sm font-medium text-gray-700">{user?.username}</span>
+                    </motion.button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    <DropdownMenuLabel className="text-xs text-gray-500 font-normal truncate">{user?.email}</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => navigate('/commandes')} className="cursor-pointer gap-2">
+                      <Package className="size-4" /> Mes commandes
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/settings')} className="cursor-pointer gap-2">
+                      <Settings className="size-4" /> Paramètres
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={logout} className="cursor-pointer gap-2 text-red-600 focus:text-red-600">
+                      <LogOut className="size-4" /> Déconnexion
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               ) : (
                 <Link to="/login">
                   <motion.div

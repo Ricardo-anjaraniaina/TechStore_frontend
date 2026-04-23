@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
+import { useCart } from '../contexts/CartContext';
 import { LogIn, Mail, Lock } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion } from 'motion/react';
@@ -11,6 +12,7 @@ export function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
+  const { refreshCart } = useCart();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -20,6 +22,7 @@ export function Login() {
 
     try {
       await login(email, password);
+      await refreshCart();
       toast.success('Connexion réussie !');
       navigate('/');
     } catch (err) {
