@@ -52,7 +52,7 @@ export function Home() {
         <div className="absolute inset-0 bg-black/40" />
 
         {/* Contenu */}
-        <div className="relative mx-auto max-w-7xl px-12 py-24 md:py-32">
+        <div className="relative mx-auto max-w-7xl px-12 py-24 md:py-32 flex items-center justify-between">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -84,6 +84,16 @@ export function Home() {
               </motion.a>
             </div>
           </motion.div>
+
+          <motion.img
+            src="/apple-08.svg"
+            alt=""
+            initial={{ opacity: 0, x: 60 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="hidden md:block rotate-45 pointer-events-none select-none shrink-0"
+            style={{ width: '28rem', height: '28rem' }}
+          />
         </div>
       </section>
 
