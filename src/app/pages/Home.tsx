@@ -91,7 +91,7 @@ export function Home() {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-3xl font-bold bg-gradient-to-r from-red-700 to-red-900 bg-clip-text text-transparent">
-              Notre Collection
+              Nos Produits
             </h2>
           </div>
 
