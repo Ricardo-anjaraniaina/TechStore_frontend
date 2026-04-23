@@ -59,13 +59,13 @@ export function Checkout() {
 
   useEffect(() => {
     if (!isAuthenticated) { navigate('/login'); return; }
-    if (cart.length === 0) { navigate('/panier'); return; }
+    if (step === 1 && cart.length === 0) { navigate('/panier'); return; }
     api.get<AddressResponse[]>('/addresses').then((data) => {
       setAddresses(data);
       const def = data.find(a => a.isDefault);
       if (def) { setShippingId(def.id); setBillingId(def.id); }
     }).catch(console.error);
-  }, [isAuthenticated, cart.length]);
+  }, [isAuthenticated, step, cart.length]);
 
   const handleAddAddress = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -107,7 +107,6 @@ export function Checkout() {
       if (isMobileMoney) {
         setStep(2);
       } else {
-        clearCart();
         setStep(4);
       }
     } catch {
